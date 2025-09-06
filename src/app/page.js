@@ -2,6 +2,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import PersonalInfo from "@/components/steps/PersonalInfo";
+import JobDetails from "@/components/steps/JobDetails";
+import { Button } from "@/components/ui/button";
 
 const steps = [
   { id: 0, label: "Personal" },
@@ -17,9 +21,25 @@ export default function Home() {
     mode: "onBlur",
   });
 
+  const { handleSubmit } = form;
+
+  const onSubmit = (values) => {
+    console.log("Submitter Values", values);
+  };
+
   return (
-    <div>
-      <p>Form</p>
-    </div>
+    <FormProvider {...form}>
+      <Card className="shadow-xl">
+        <CardHeader>
+          <CardTitle>New Employee Onboarding</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 mt-6">
+            {step === 0 && <PersonalInfo />}
+            {step === 1 && <JobDetails />}
+          </form>
+        </CardContent>
+      </Card>
+    </FormProvider>
   );
 }
