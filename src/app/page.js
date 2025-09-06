@@ -11,7 +11,9 @@ import EmergencyContact from "@/components/steps/EmergencyContact";
 import ReviewSubmit from "@/components/steps/ReviewSubmit";
 import { useAutosave } from "@/hooks/useAutoSave";
 import Stepper from "@/components/Stepper";
-import { masterSchema, defaultValues } from "@/lib/schema";
+import { masterSchema, defaultValues, stepSchemas } from "@/lib/schema";
+import { useWarnUnload } from "@/hooks/useWarnUnload";
+import { toast } from "sonner";
 
 const steps = [
   { id: 0, label: "Personal" },
@@ -33,15 +35,28 @@ export default function Home() {
   const lastStep = step === steps.length - 1;
 
   const { saved, saveNow, isDirtySinceSave } = useAutosave(form);
+  useWarnUnload(isDirtySinceSave);
 
   const onNext = async () => {
+    const schema = stepSchemas[step];
+    const subsetKeys = Object.keys(schema.shape);
+    const isValid = await trigger(subsetKeys);
+    if (!isValid) {
+      toast.error("Please fill up all the fields");
+      return;
+    }
+
+    // Log form values whenever the user proceeds to the next step
+    console.log(`Step ${step + 1} Values:`, getValues());
+
     setStep((s) => Math.min(s + 1, steps.length - 1));
   };
 
   const onBack = () => setStep((s) => Math.max(0, s - 1));
 
   const onSubmit = (values) => {
-    console.log("Submitter Values", values);
+    console.log("Submitted Values", values);
+    reset(values, { keepValues: true });
   };
 
   return (
@@ -60,7 +75,7 @@ export default function Home() {
             {step === 1 && <JobDetails />}
             {step === 2 && <Skills />}
             {step === 3 && <EmergencyContact />}
-            {step === 4 && <ReviewSubmit />}
+            {step === 4 && <ReviewSubmit allValues={getValues()} />}
 
             <div className="flex items-center justify-between gap-2 pt-2">
               <div className="text-sm text-muted-foreground">

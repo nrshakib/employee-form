@@ -87,8 +87,14 @@ export default function JobDetails() {
         >
           {["Full-time", "Part-time", "Contract"].map((type) => (
             <div key={type} className="flex items-center space-x-2">
-              <RadioGroupItem value={type} id={type} />
-              <Label htmlFor={type}>{type}</Label>
+              <RadioGroupItem
+                value={type}
+                id={type}
+                className="cursor-pointer"
+              />
+              <Label htmlFor={type} className="cursor-pointer">
+                {type}
+              </Label>
             </div>
           ))}
         </RadioGroup>

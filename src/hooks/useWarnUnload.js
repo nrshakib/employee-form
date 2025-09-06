@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useBeforeUnload(shouldWarn) {
+export function useWarnUnload(shouldWarn) {
   useEffect(() => {
     const handler = (e) => {
       if (!shouldWarn) return;

@@ -60,14 +60,15 @@ export const jobSchema = z
     managerApproved: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
-    // start date not in the past, <= 90 days in future
     const startingDate = toDate(data.startDate);
+    // console.log("startingDate", startingDate);
     if (!startingDate) return;
     const startOfToday = new Date(
       today.getFullYear(),
       today.getMonth(),
       today.getDate()
     );
+    // console.log("startOfToday", startOfToday);
     if (startingDate < startOfToday)
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -100,7 +101,7 @@ export const jobSchema = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["annualSalary"],
-          message: "$30k - $200k",
+          message: "Annual salary range should be $30000 - $200000",
         });
     }
     if (data.jobType === "Contract") {
@@ -109,7 +110,7 @@ export const jobSchema = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["hourlyRate"],
-          message: "$50 - $150/hr",
+          message: "Hourly rate range should be $50 - $150/hr",
         });
     }
   });

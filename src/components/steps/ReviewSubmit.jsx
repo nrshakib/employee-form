@@ -2,6 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { Checkbox } from "../ui/checkbox";
 
 export default function StepReview({ allValues }) {
+  console.log(allValues);
   const { setValue, watch } = useFormContext();
   const confirmed = watch("review.confirmed");
 

@@ -1,10 +1,11 @@
 import { useEffect, useMemo } from "react";
-import SkillCheckbox from "./SkillCheckBox";
-import ErrorFormField from "../form/ErrorFormField";
-import { Input } from "../ui/input";
-import { Slider } from "../ui/slider";
 import { useFormContext } from "react-hook-form";
 import { skillsByDepartment } from "@/lib/dummyData";
+import ErrorFormField from "../form/ErrorFormField";
+
+import SkillCheckbox from "./SkillCheckBox";
+import { Input } from "../ui/input";
+import { Slider } from "../ui/slider";
 
 export default function Skills() {
   const { watch, setValue, control } = useFormContext();
@@ -59,7 +60,14 @@ export default function Skills() {
             label={`${skill} experience (years)`}
           >
             {(field) => (
-              <Input type="number" min={0} max={30} step={1} {...field} />
+              <Input
+                {...field}
+                type="number"
+                min={0}
+                max={30}
+                step={1}
+                className="px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary"
+              />
             )}
           </ErrorFormField>
         ))}
