@@ -40,7 +40,9 @@ export default function Home() {
   const onNext = async () => {
     const schema = stepSchemas[step];
     const subsetKeys = Object.keys(schema.shape);
+    console.log("subsetKeys", subsetKeys);
     const isValid = await trigger(subsetKeys);
+    console.log("isValid", isValid);
     if (!isValid) {
       toast.error("Please fill up all the fields");
       return;

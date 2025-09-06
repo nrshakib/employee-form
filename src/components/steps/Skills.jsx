@@ -8,10 +8,15 @@ import { Input } from "../ui/input";
 import { Slider } from "../ui/slider";
 
 export default function Skills() {
-  const { watch, setValue, control } = useFormContext();
+  const {
+    watch,
+    setValue,
+    control,
+    formState: { errors },
+  } = useFormContext();
   const dept = watch("job.department");
-  const selectedSkill = watch("skills.primarySkills") || [];
-  const experienceBySkill = watch("skills.experienceBySkill") || {};
+  const selectedSkill = watch("skills.primarySkills", []);
+  const experienceBySkill = watch("skills.experienceBySkill", {});
 
   const skills = useMemo(() => skillsByDepartment[dept] || [], [dept]);
 
@@ -94,11 +99,11 @@ export default function Skills() {
         <p className="font-medium mb-2">
           Remote Work Preference:{" "}
           <span className="font-normal">
-            {watch("skills.remotePreference") || 0}%
+            {watch("skills.remotePreference", 0)}%
           </span>
         </p>
         <Slider
-          value={[watch("skills.remotePreference") || 0]}
+          value={[watch("skills.remotePreference", 0)]}
           onValueChange={(v) =>
             setValue("skills.remotePreference", v[0], {
               shouldDirty: true,

@@ -121,21 +121,30 @@ export const skillsSchema = z
     experienceBySkill: z
       .record(z.string(), z.union([z.string(), z.number()]).optional())
       .default({}),
-    workHours: z.object({ start: z.string().min(1), end: z.string().min(1) }),
-    remotePreference: z.number().min(0).max(100),
+    workHours: z.object({
+      start: z.string().min(1, "Start time is required"),
+      end: z.string().min(1, "End time is required"),
+    }),
+    remotePreference: z
+      .number()
+      .min(0)
+      .max(100, "Remote work preference must be between 0 and 100"),
     notes: z.string().max(500).optional(),
   })
   .superRefine((data, ctx) => {
     // End after start
-    const [sh, sm] = (data.workHours.start || "").split(":").map(Number);
-    const [eh, em] = (data.workHours.end || "").split(":").map(Number);
+    const [sh, sm] = (data.workHours.start || "00:00").split(":").map(Number);
+    const [eh, em] = (data.workHours.end || "00:00").split(":").map(Number);
     const start = sh * 60 + sm;
     const end = eh * 60 + em;
+
+    console.log(start, end);
+
     if (!(end > start))
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["workHours", "end"],
-        message: "End must be after start",
+        message: "End must be after start time",
       });
   });
 
