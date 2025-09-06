@@ -20,6 +20,7 @@ export default function JobDetails() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <p>Job Details</p>
       <ErrorFormField
         name="job.department"
         control={control}

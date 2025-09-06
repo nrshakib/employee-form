@@ -11,12 +11,13 @@ import {
   SelectValue,
 } from "../ui/select";
 
-export default function StepEmergency() {
+export default function EmergencyContact() {
   const { control, setValue, watch } = useFormContext();
   const under21 = watch("meta.isUnder21");
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <p>Emeergency Contact</p>
       <ErrorFormField
         name="emergency.name"
         control={control}

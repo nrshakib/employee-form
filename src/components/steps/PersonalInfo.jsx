@@ -9,6 +9,7 @@ export default function PersonalInfo() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <p>Personal Info</p>
       <ErrorFormField
         name="personal.fullName"
         control={control}

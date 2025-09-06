@@ -1,14 +1,41 @@
 import { useEffect, useMemo } from "react";
-import { useFormContext } from "react-hook-form";
-import { skillsByDepartment } from "@/lib/dummyData";
 import SkillCheckbox from "./SkillCheckBox";
 import ErrorFormField from "../form/ErrorFormField";
 import { Input } from "../ui/input";
 import { Slider } from "../ui/slider";
+import { useFormContext } from "react-hook-form";
+import { skillsByDepartment } from "@/lib/dummyData";
 
-export default function StepSkills() {
+export default function Skills() {
+  const { watch, setValue, control } = useFormContext();
+  const dept = watch("job.department");
+  const selectedSkill = watch("skills.primarySkills") || [];
+  const experienceBySkill = watch("skills.experienceBySkill") || {};
+
+  const skills = useMemo(() => skillsByDepartment[dept] || [], [dept]);
+
+  useEffect(() => {
+    const cleanedSkill = selectedSkill.filter((s) => skills.includes(s));
+    if (cleanedSkill.length !== selectedSkill.length)
+      setValue("skills.primarySkills", cleanedSkill, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+  }, [dept]);
+
+  const toggleSkill = (skill) => {
+    const next = selectedSkill.includes(skill)
+      ? selectedSkill.filter((s) => s !== skill)
+      : [...selectedSkill, skill];
+    setValue("skills.primarySkills", next, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
   return (
     <div className="space-y-6">
+      <p>Skills</p>
       <div>
         <p className="font-medium mb-2">Primary Skills (choose at least 3)</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -16,7 +43,7 @@ export default function StepSkills() {
             <SkillCheckbox
               key={skill}
               skill={skill}
-              checked={selected.includes(skill)}
+              checked={selectedSkill.includes(skill)}
               onChange={() => toggleSkill(skill)}
             />
           ))}
@@ -24,7 +51,7 @@ export default function StepSkills() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {selected.map((skill) => (
+        {selectedSkill.map((skill) => (
           <ErrorFormField
             key={skill}
             name={`skills.experienceBySkill.${skill}`}
