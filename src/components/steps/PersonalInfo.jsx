@@ -49,7 +49,7 @@ export default function PersonalInfo() {
         {(field) => <Input type="date" {...field} className="h-12" />}
       </ErrorFormField>
 
-      <div className="md:col-span-2">
+      <div className="flex flex-col gap-2 md:col-span-2">
         <Label>Profile Picture (JPG/PNG, max 2MB)</Label>
         <Controller
           control={control}
@@ -59,12 +59,13 @@ export default function PersonalInfo() {
               type="file"
               accept="image/png,image/jpeg"
               onChange={(e) => onChange(e.target.files?.[0] || null)}
+              className="cursor-pointer"
             />
           )}
         />
         {file && (
           <p className="text-xs text-muted-foreground mt-1">
-            Selected: {file.name}
+            Selected: <span className="text-green-600">{file.name}</span>
           </p>
         )}
       </div>

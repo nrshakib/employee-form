@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export default function Stepper({ steps, current, validation }) {
   return (
-    <ol className="grid grid-cols-5 gap-2">
+    <ol className="flex flex-wrap gap-2">
       {steps.map((s, idx) => {
         const hasError =
           Object.keys(validation || {}).length > 0 && idx === current;
@@ -10,7 +10,7 @@ export default function Stepper({ steps, current, validation }) {
           <li
             key={s.id}
             className={cn(
-              "flex items-center gap-2 rounded-lg border p-2 text-sm",
+              "flex items-center gap-2 rounded-lg border p-2 text-sm w-40",
               idx === current && "border-primary",
               hasError && "border-destructive"
             )}
@@ -19,7 +19,7 @@ export default function Stepper({ steps, current, validation }) {
               className={cn(
                 "size-6 rounded-full grid place-items-center text-xs",
                 idx <= current
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-red-500 text-primary-foreground"
                   : "bg-muted"
               )}
             >

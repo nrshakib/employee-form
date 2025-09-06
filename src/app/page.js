@@ -29,7 +29,7 @@ export default function Home() {
     defaultValues,
   });
 
-  const { handleSubmit, formState, getValues } = form;
+  const { handleSubmit, trigger, formState, reset, getValues } = form;
   const lastStep = step === steps.length - 1;
 
   const { saved, saveNow, isDirtySinceSave } = useAutosave(form);

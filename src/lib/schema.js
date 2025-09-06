@@ -21,10 +21,10 @@ export const personalSchema = z.object({
     .min(3)
     .refine(
       (v) => v.split(/\s+/).length >= 2,
-      "Please enter at least first and last name"
+      "Please enter your First and Last Name (* minimum 2 Words)"
     ),
   email: z.string().email(),
-  phone: z.string().regex(phoneRegex, "Format +1-123-456-7890"),
+  phone: z.string().regex(phoneRegex, "Enter a valid phone number"),
   dob: z
     .string()
     .min(1, "DOB is required")
@@ -32,7 +32,7 @@ export const personalSchema = z.object({
       const d = new Date(v);
       const age = (today - d) / (365.25 * 24 * 3600 * 1000);
       return age >= 18;
-    }, "Must be at least 18"),
+    }, "Age must be at least 18"),
   profilePicture: z
     .any()
     .optional()
@@ -61,20 +61,20 @@ export const jobSchema = z
   })
   .superRefine((data, ctx) => {
     // start date not in the past, <= 90 days in future
-    const sd = toDate(data.startDate);
-    if (!sd) return;
+    const startingDate = toDate(data.startDate);
+    if (!startingDate) return;
     const startOfToday = new Date(
       today.getFullYear(),
       today.getMonth(),
       today.getDate()
     );
-    if (sd < startOfToday)
+    if (startingDate < startOfToday)
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["startDate"],
         message: "Start date cannot be in the past",
       });
-    if (sd > addDays(startOfToday, 90))
+    if (startingDate > addDays(startOfToday, 90))
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["startDate"],
@@ -82,7 +82,10 @@ export const jobSchema = z
       });
 
     // weekend restriction for HR/Finance (Fri, Sat)
-    if (["HR", "Finance"].includes(data.department) && isWeekendFriSat(sd)) {
+    if (
+      ["HR", "Finance"].includes(data.department) &&
+      isWeekendFriSat(startingDate)
+    ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["startDate"],

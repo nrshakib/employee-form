@@ -1,3 +1,6 @@
+import { useFormContext } from "react-hook-form";
+import ErrorFormField from "../form/ErrorFormField";
+
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
@@ -9,8 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useFormContext } from "react-hook-form";
-import ErrorFormField from "../form/ErrorFormField";
+import ManagerHandler from "../form/ManagerHandler";
 
 export default function JobDetails() {
   const { control, watch, setValue } = useFormContext();
@@ -41,9 +43,9 @@ export default function JobDetails() {
             <SelectContent>
               <SelectGroup>
                 {["Engineering", "Marketing", "Sales", "HR", "Finance"].map(
-                  (d) => (
-                    <SelectItem key={d} value={d}>
-                      {d}
+                  (dept) => (
+                    <SelectItem key={dept} value={dept}>
+                      {dept}
                     </SelectItem>
                   )
                 )}
@@ -83,10 +85,10 @@ export default function JobDetails() {
           }
           className="mt-2"
         >
-          {["Full-time", "Part-time", "Contract"].map((t) => (
-            <div key={t} className="flex items-center space-x-2">
-              <RadioGroupItem value={t} id={t} />
-              <Label htmlFor={t}>{t}</Label>
+          {["Full-time", "Part-time", "Contract"].map((type) => (
+            <div key={type} className="flex items-center space-x-2">
+              <RadioGroupItem value={type} id={type} />
+              <Label htmlFor={type}>{type}</Label>
             </div>
           ))}
         </RadioGroup>
@@ -121,6 +123,11 @@ export default function JobDetails() {
           )}
         </ErrorFormField>
       )}
+
+      <div className="flex flex-col gap-2 md:col-span-2">
+        <Label>Manager</Label>
+        <ManagerHandler />
+      </div>
 
       {remote > 50 && (
         <ErrorFormField
