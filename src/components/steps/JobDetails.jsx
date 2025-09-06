@@ -19,8 +19,8 @@ export default function JobDetails() {
   const remote = watch("skills.remotePreference");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <p>Job Details</p>
+    <div className="flex flex-col gap-6">
+      <p className="text-center text-xl font-semibold">Job Details</p>
       <ErrorFormField
         name="job.department"
         control={control}
@@ -58,11 +58,17 @@ export default function JobDetails() {
         control={control}
         label="Position Title"
       >
-        {(field) => <Input placeholder="e.g. Frontend Engineer" {...field} />}
+        {(field) => (
+          <Input
+            placeholder="e.g. Frontend Engineer"
+            {...field}
+            className="h-12"
+          />
+        )}
       </ErrorFormField>
 
       <ErrorFormField name="job.startDate" control={control} label="Start Date">
-        {(field) => <Input type="date" {...field} />}
+        {(field) => <Input type="date" {...field} className="h-12" />}
       </ErrorFormField>
 
       <div>

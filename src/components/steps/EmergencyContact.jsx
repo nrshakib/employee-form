@@ -16,14 +16,16 @@ export default function EmergencyContact() {
   const under21 = watch("meta.isUnder21");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <p>Emeergency Contact</p>
+    <div className="flex flex-col gap-6">
+      <p className="text-center text-xl font-semibold">Emergency Contact</p>
       <ErrorFormField
         name="emergency.name"
         control={control}
         label="Contact Name"
       >
-        {(field) => <Input placeholder="e.g. Alex Doe" {...field} />}
+        {(field) => (
+          <Input placeholder="e.g. Alex Doe" {...field} className="h-12" />
+        )}
       </ErrorFormField>
 
       <ErrorFormField
@@ -61,7 +63,9 @@ export default function EmergencyContact() {
         control={control}
         label="Phone (+1-123-456-7890)"
       >
-        {(field) => <Input placeholder="+1-123-456-7890" {...field} />}
+        {(field) => (
+          <Input placeholder="+1-123-456-7890" {...field} className="h-12" />
+        )}
       </ErrorFormField>
 
       {under21 && (

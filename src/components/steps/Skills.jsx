@@ -34,8 +34,8 @@ export default function Skills() {
   };
 
   return (
-    <div className="space-y-6">
-      <p>Skills</p>
+    <div className="flex flex-col gap-6">
+      <p className="text-center text-xl font-semibold">Skills</p>
       <div>
         <p className="font-medium mb-2">Primary Skills (choose at least 3)</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">

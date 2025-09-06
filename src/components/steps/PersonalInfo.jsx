@@ -8,19 +8,26 @@ export default function PersonalInfo() {
   const file = watch("personal.profilePicture");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <p>Personal Info</p>
+    <div className="flex flex-col gap-6">
+      <p className="text-center text-xl font-semibold">Personal Info</p>
       <ErrorFormField
         name="personal.fullName"
         control={control}
         label="Full Name"
       >
-        {(field) => <Input placeholder="e.g. Jane Doe" {...field} />}
+        {(field) => (
+          <Input placeholder="e.g. Jane Doe" {...field} className="h-12" />
+        )}
       </ErrorFormField>
 
       <ErrorFormField name="personal.email" control={control} label="Email">
         {(field) => (
-          <Input type="email" placeholder="jane@company.com" {...field} />
+          <Input
+            type="email"
+            placeholder="jane@company.com"
+            {...field}
+            className="h-12"
+          />
         )}
       </ErrorFormField>
 
@@ -29,7 +36,9 @@ export default function PersonalInfo() {
         control={control}
         label="Phone (+1-123-456-7890)"
       >
-        {(field) => <Input placeholder="+1-123-456-7890" {...field} />}
+        {(field) => (
+          <Input placeholder="+1-123-456-7890" {...field} className="h-12" />
+        )}
       </ErrorFormField>
 
       <ErrorFormField
@@ -37,7 +46,7 @@ export default function PersonalInfo() {
         control={control}
         label="Date of Birth"
       >
-        {(field) => <Input type="date" {...field} />}
+        {(field) => <Input type="date" {...field} className="h-12" />}
       </ErrorFormField>
 
       <div className="md:col-span-2">

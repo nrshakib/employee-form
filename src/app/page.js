@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import PersonalInfo from "@/components/steps/PersonalInfo";
@@ -10,6 +11,7 @@ import EmergencyContact from "@/components/steps/EmergencyContact";
 import ReviewSubmit from "@/components/steps/ReviewSubmit";
 import { useAutosave } from "@/hooks/useAutoSave";
 import Stepper from "@/components/Stepper";
+import { masterSchema, defaultValues } from "@/lib/schema";
 
 const steps = [
   { id: 0, label: "Personal" },
@@ -23,6 +25,8 @@ export default function Home() {
   const [step, setStep] = useState(0);
   const form = useForm({
     mode: "onBlur",
+    resolver: zodResolver(masterSchema),
+    defaultValues,
   });
 
   const { handleSubmit, formState, getValues } = form;
@@ -42,9 +46,11 @@ export default function Home() {
 
   return (
     <FormProvider {...form}>
-      <Card className="shadow-xl">
-        <CardHeader>
-          <CardTitle>New Employee Onboarding</CardTitle>
+      <Card className="shadow-lg rounded-lg border border-gray-200 max-w-1/2 mx-auto">
+        <CardHeader className="bg-primary text-white p-4 rounded-t-lg">
+          <p className="text-xl font-semibold text-center">
+            New Employee Onboarding
+          </p>
         </CardHeader>
         <CardContent>
           <Stepper steps={steps} current={step} validation={formState.errors} />
@@ -64,7 +70,7 @@ export default function Home() {
                   ? "Unsaved changes"
                   : ""}
               </div>
-              <div className="ml-auto flex gap-2">
+              <div className="flex gap-2">
                 {step > 0 && (
                   <Button type="button" variant="outline" onClick={onBack}>
                     Back
