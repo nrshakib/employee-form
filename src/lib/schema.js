@@ -138,14 +138,13 @@ export const skillsSchema = z
     const start = sh * 60 + sm;
     const end = eh * 60 + em;
 
-    console.log(start, end);
-
-    if (!(end > start))
+    if (!(end > start)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["workHours", "end"],
         message: "End must be after start time",
       });
+    }
   });
 
 export const emergencySchema = z.object({

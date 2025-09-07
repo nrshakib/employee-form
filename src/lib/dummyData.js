@@ -23,7 +23,7 @@ export const skillsByDepartment = {
     "JavaScript",
     "TypeScript",
     "React",
-    "Node.js",
+    "NodeJs",
     "GraphQL",
     "Docker",
     "CI/CD",

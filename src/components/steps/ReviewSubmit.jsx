@@ -17,6 +17,7 @@ export default function StepReview({ allValues }) {
 
   return (
     <div className="space-y-6">
+      {/* personal */}
       <section>
         <h3 className="font-semibold mb-2">Personal Info</h3>
         <Row label="Name" value={personal?.fullName} />
@@ -24,6 +25,7 @@ export default function StepReview({ allValues }) {
         <Row label="Phone" value={personal?.phone} />
         <Row label="DOB" value={personal?.dob} />
       </section>
+      {/* job */}
       <section>
         <h3 className="font-semibold mb-2">Job Details</h3>
         <Row label="Department" value={job?.department} />
@@ -37,6 +39,7 @@ export default function StepReview({ allValues }) {
           <Row label="Hourly Rate" value={`$${job.hourlyRate}/hr`} />
         )}
       </section>
+      {/* skills */}
       <section>
         <h3 className="font-semibold mb-2">Skills & Preferences</h3>
         <Row
@@ -56,6 +59,7 @@ export default function StepReview({ allValues }) {
         {job?.managerApproved && <Row label="Manager Approved" value="Yes" />}
         {skills?.notes && <Row label="Notes" value={skills.notes} />}
       </section>
+      {/* emergency contact */}
       <section>
         <h3 className="font-semibold mb-2">Emergency Contact</h3>
         <Row label="Name" value={emergency?.name} />
@@ -68,7 +72,6 @@ export default function StepReview({ allValues }) {
           />
         )}
       </section>
-
       <label className="flex items-center gap-2 pt-2">
         <Checkbox
           checked={!!confirmed}

@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { skillsByDepartment } from "@/lib/dummyData";
 import ErrorFormField from "../form/ErrorFormField";
 
@@ -14,11 +14,13 @@ export default function Skills() {
     control,
     formState: { errors },
   } = useFormContext();
+
   const dept = watch("job.department");
   const selectedSkill = watch("skills.primarySkills", []);
-  const experienceBySkill = watch("skills.experienceBySkill", {});
 
   const skills = useMemo(() => skillsByDepartment[dept] || [], [dept]);
+
+  // console.log(errors);
 
   useEffect(() => {
     const cleanedSkill = selectedSkill.filter((s) => skills.includes(s));
@@ -27,7 +29,7 @@ export default function Skills() {
         shouldDirty: true,
         shouldValidate: true,
       });
-  }, [dept]);
+  }, [dept, selectedSkill, skills, setValue]);
 
   const toggleSkill = (skill) => {
     const next = selectedSkill.includes(skill)
@@ -65,13 +67,20 @@ export default function Skills() {
             label={`${skill} experience (years)`}
           >
             {(field) => (
-              <Input
-                {...field}
-                type="number"
-                min={0}
-                max={30}
-                step={1}
-                className="px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary"
+              <Controller
+                name={`skills.experienceBySkill.${skill}`}
+                control={control}
+                defaultValue={field.value || ""}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    type="number"
+                    min={0}
+                    max={30}
+                    step={1}
+                    className="px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary"
+                  />
+                )}
               />
             )}
           </ErrorFormField>

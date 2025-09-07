@@ -11,9 +11,9 @@ import EmergencyContact from "@/components/steps/EmergencyContact";
 import ReviewSubmit from "@/components/steps/ReviewSubmit";
 import { useAutosave } from "@/hooks/useAutoSave";
 import Stepper from "@/components/Stepper";
-import { masterSchema, defaultValues, stepSchemas } from "@/lib/schema";
 import { useWarnUnload } from "@/hooks/useWarnUnload";
 import { toast } from "sonner";
+import { defaultValues, masterSchema, stepSchemas } from "@/lib/schema";
 
 const steps = [
   { id: 0, label: "Personal" },
@@ -28,31 +28,39 @@ export default function Home() {
   const form = useForm({
     mode: "onBlur",
     resolver: zodResolver(masterSchema),
-    defaultValues,
+    defaultValues: defaultValues,
   });
 
   const { handleSubmit, trigger, formState, reset, getValues } = form;
   const lastStep = step === steps.length - 1;
 
+  // console.log("adasdsad", getValues("skills"));
+
   const { saved, saveNow, isDirtySinceSave } = useAutosave(form);
   useWarnUnload(isDirtySinceSave);
 
   const onNext = async () => {
+    // console.log(`Step ${step + 1} Values:`, getValues());
+
     const schema = stepSchemas[step];
-    const subsetKeys = Object.keys(schema.shape);
-    console.log("subsetKeys", subsetKeys);
+    const subsetKeys = Object.keys(schema.shape || schema.shape.skills.shape);
+    // console.log("Validation Keys:", subsetKeys);
+    // console.log("Form Values:", getValues());
+
     const isValid = await trigger(subsetKeys);
-    console.log("isValid", isValid);
+    // console.log("isValid", isValid);
     if (!isValid) {
       toast.error("Please fill up all the fields");
       return;
     }
 
     // Log form values whenever the user proceeds to the next step
-    console.log(`Step ${step + 1} Values:`, getValues());
+    // console.log(`Step ${step + 1} Values:`, getValues());
 
     setStep((s) => Math.min(s + 1, steps.length - 1));
   };
+
+  const isNextDisabled = formState.isDirty && !formState.isValid;
 
   const onBack = () => setStep((s) => Math.max(0, s - 1));
 
@@ -94,7 +102,11 @@ export default function Home() {
                   </Button>
                 )}
                 {step < 4 && (
-                  <Button type="button" onClick={onNext}>
+                  <Button
+                    type="button"
+                    onClick={onNext}
+                    // disabled={isNextDisabled}
+                  >
                     Next
                   </Button>
                 )}
