@@ -66,6 +66,7 @@ export default function Home() {
 
   const onSubmit = (values) => {
     console.log("Submitted Values", values);
+    toast.success("Form Submitted Succesfully");
     reset(values, { keepValues: true });
   };
 
